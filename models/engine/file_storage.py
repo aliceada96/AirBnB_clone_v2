@@ -25,14 +25,11 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if cls and cls in self.classes.keys():
             objects = {}
-            #            return [obj.__dict__ for obj in list(filter((lambda x : isinstance(x, self.classes[cls])), self.__ #complete this line
-            #return [obj.__dict__ for obj in list(filter((lambda x : isinstance(x, self.classes[cls])), self.__dict__.values()))]#
             for obj in FileStorage.__objects.keys:
                 cls_name = obj.split()[0].rstrip("]").lstrip("[")
                 if cls == cls_name:
                     objects[obj] = FileStorage.__objects[obj]
             return objects
-            
 
         return FileStorage.__objects
 
