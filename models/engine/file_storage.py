@@ -64,4 +64,5 @@ class FileStorage:
             obj (class instance, optional): object of one of the classes.
               Defaults to None.
         """
-        del FileStorage.__objects[(obj.to_dict()['__class__'] + '.' + obj.id)]
+        if obj is not None:
+            del FileStorage.__objects[(obj.to_dict()['__class__'] + '.' + obj.id)]
