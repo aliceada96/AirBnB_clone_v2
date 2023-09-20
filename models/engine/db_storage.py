@@ -29,14 +29,12 @@ class DBStorage():
             "mysql+mysqldb://{}:{}@{}/{}".format(
                 db_user, db_password,db_host, db_name),
             pool_pre_ping=True,
-            echo=True, # used to observe the queries to db TODO REMOVE
         )
 
         if hbnb_env == 'test':
             Base.metadata.drop_all(self.__engine)
 
         Base.metadata.create_all(self.__engine)
-        print("------------------------- create_all ran ======")
 
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
