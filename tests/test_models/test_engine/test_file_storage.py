@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-""" Module for testing file storage"""
+""" This module contains unit tests for the functions and classes defined
+in the file storage"""
 import unittest
 from models.base_model import BaseModel
 from models import storage
