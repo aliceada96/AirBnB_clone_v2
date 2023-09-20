@@ -5,12 +5,16 @@ from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 from os import getenv
 
+
 place_amenity = Table(
     'place_amenity',
     Base.metadata,
-    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+    Column('place_id', String(60),
+           ForeignKey('places.id'), primary_key=True, nullable=False),
+    Column('amenity_id', String(60),
+           ForeignKey('amenities.id'), primary_key=True, nullable=False)
 )
+
 
 class Place(BaseModel, Base):
     """A place to stay"""
@@ -29,7 +33,8 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", cascade="all, delete", backref="place")
+        reviews = relationship("Review",
+                               cascade="all, delete", backref="place")
         amenities = relationship(
             "Amenity",
             secondary=place_amenity,
@@ -42,13 +47,13 @@ class Place(BaseModel, Base):
             to the current Place.i"""
             from models import storage
             from models.review import Review
-    
+
             reviews = []
             for review in storage.all(Review).values():
                 if review.place_id == self.id:
                     reviews.append(review)
             return reviews
-        
+
         @property
         def amenities(self):
             """Getter for amenities attribute"""
@@ -59,11 +64,10 @@ class Place(BaseModel, Base):
                 if amenities.place_id == self.id:
                     amenities.append(amenity)
             return amenities
-        
+
         @amenities.setter
         def amenities(self, amenity_obj):
             """Setter for amenities attribute"""
             from models.amenity import Amenity
             if isinstance(amenity_obj, Amenity):
                 self.amenity_ids.append(amenity_obj.id)
-    
