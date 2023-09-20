@@ -29,7 +29,7 @@ class BaseModel:
                         setattr(
                             self,
                             key,
-                            datetime.datetime.strptime(
+                            datetime.strptime(
                               value, "%Y-%m-%dT%H:%M:%S.%f"),
                         )
                     else:
