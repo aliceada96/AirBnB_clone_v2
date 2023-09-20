@@ -5,15 +5,17 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 
-class DBStorage():
+
+class DBStorage:
     """A class that handles database storage operations."""
 
     __engine = None
     __session = None
 
     def __init__(self):
-        """Initializes the database engine and binds it to a new Session object.
-        
+        """Initializes the database engine and binds it to a new
+        Session object.
+
         The database engine is created with the provided environment variables
         for the user, password, host, and database name.
         The Session object is then created and assigned to self.__session.
@@ -21,17 +23,18 @@ class DBStorage():
 
         db_user = environ.get("HBNB_MYSQL_USER")
         db_password = environ.get("HBNB_MYSQL_PWD")
-        db_host = environ.get("HBNB_MYSQL_HOST") # (here = localhost)
+        db_host = environ.get("HBNB_MYSQL_HOST")  # (here = localhost)
         db_name = environ.get("HBNB_MYSQL_DB")
         hbnb_env = environ.get("HBNB_ENV")
 
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}/{}".format(
-                db_user, db_password,db_host, db_name),
+                db_user, db_password, db_host, db_name
+            ),
             pool_pre_ping=True,
         )
 
-        if hbnb_env == 'test':
+        if hbnb_env == "test":
             Base.metadata.drop_all(self.__engine)
 
         Base.metadata.create_all(self.__engine)
@@ -40,7 +43,7 @@ class DBStorage():
         self.__session = Session()
 
     def all(self, cls=None):
-        
+
         """Returns a dictionary of models currently in storage"""
         objects = {}
 
@@ -63,7 +66,7 @@ class DBStorage():
         self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session (self.__session)."""
+        """commit all changes of the current database session"""
         self.__session.commit()
 
     def delete(self, obj=None):
@@ -73,8 +76,10 @@ class DBStorage():
 
     def reload(self):
         """create all tables in the database (feature of SQLAlchemy)
-        (WARNING: all classes who inherit from Base must be imported before calling Base.metadata.create_all(engine))"""
-        """create the current database session (self.__session) from the engine (self.__engine) by using a sessionmaker
+        (WARNING: all classes who inherit from Base must be imported
+        before calling Base.metadata.create_all(engine))"""
+        """create the current database session (self.__session) from the engine
+        (self.__engine) by using a sessionmaker
         - the option expire_on_commit must be set to False ;
         and scoped_session - to make sure your Session is thread-safe"""
 
@@ -86,8 +91,9 @@ class DBStorage():
         from models.review import Review
 
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine,
-                               expire_on_commit=False,
-                               )
+        Session = sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False,
+        )
         Session = scoped_session(Session)
         self.__session = Session()
