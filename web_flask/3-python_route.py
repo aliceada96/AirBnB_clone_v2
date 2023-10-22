@@ -26,8 +26,8 @@ def c_text(text):
 @app.route("/python/<text>", strict_slashes=False)
 @app.route("/python", strict_slashes=False)
 def python_text(text='is cool'):
-    """Return Python folled by text"""
-    return f"C {text.replace('_', ' ')}"
+    """Return text with Python appended to it."""
+    return f"Python {text.replace('_', ' ')}"
 
 
 if __name__ == "__main__":
